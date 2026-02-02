@@ -19,11 +19,11 @@
 
 <div align="left">
   
-  Experienced Software Developer with expertise in C# and backend development. Specialized in building desktop applications using C# and working with databases like SQL Server and SQLite. Developed multiple backend projects using ASP.NET. Passionate about learning new technologies and currently focusing on expanding frontend skills.
+  Experienced Software Developer with expertise in C# and backend development. Specialized in building desktop applications and backend systems using SQL Server and SQLite. Developed multiple backend projects using ASP.NET. Passionate about learning new technologies and currently focusing on expanding frontend skills.
   
-- 🎯 Experienced Software Developer with a strong focus on C# and backend development, specializing in building robust desktop applications.
-- 💼 Proficient in working with databases, particularly Microsoft SQL Server and SQLite, to design and implement efficient data solutions.
-- 🚀 Developed multiple backend projects using ASP.NET, showcasing expertise in creating scalable and secure web applications. Currently expanding frontend skills to become a full-stack developer.
+- 🎯 Experienced Software Developer with a strong focus on C# and backend development, specializing in building robust desktop applications and backend systems using Microsoft SQL Server and SQLite.
+- 💼 Developed multiple backend projects leveraging ASP.NET, showcasing expertise in creating efficient and scalable solutions.
+- 🚀 Passionate about continuous learning, currently expanding frontend skills to broaden technical capabilities and deliver full-stack solutions.
   - 📫 Reach me at: ahmedmos5102003@gmail.com
 
 </div>
