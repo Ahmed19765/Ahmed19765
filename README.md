@@ -1,6 +1,6 @@
 <h1 align="center">Hi there, I'm Ahmed Ehab 👋</h1>
 
-<h3 align="center">C# Developer | Backend Specialist | Desktop Application Builder</h3>
+<h3 align="center">Backend Developer | Desktop Application Specialist | ASP.NET Enthusiast</h3>
 
 <div align="center">
 
@@ -22,8 +22,8 @@
   Experienced Software Developer with expertise in C# and backend development. Specialized in building desktop applications and backend systems using SQL Server and SQLite. Developed multiple backend projects using ASP.NET. Passionate about learning new technologies and currently focusing on expanding frontend skills.
   
 - 🎯 Experienced Software Developer with a strong focus on C# and backend development, specializing in building robust desktop applications and backend systems using Microsoft SQL Server and SQLite.
-- 💼 Developed multiple backend projects leveraging ASP.NET, showcasing expertise in creating efficient and scalable solutions.
-- 🚀 Passionate about continuous learning, currently expanding frontend skills to broaden technical capabilities and deliver full-stack solutions.
+- 💼 Developed multiple backend projects utilizing ASP.NET, showcasing expertise in creating efficient and scalable solutions for various applications.
+- 🚀 Passionate about continuous learning and growth, currently expanding frontend skills to become a well-rounded full-stack developer, while maintaining a solid foundation in backend technologies.
   - 📫 Reach me at: ahmedmos5102003@gmail.com
 
 </div>
@@ -45,5 +45,5 @@
 ## 🐍 Contribution Graph
 
 <div align="center">
-  <img src="https://github.com/Ahmed19765/Ahmed19765/blob/output/snake-dark.svg" alt="Snake animation" />
+  <img src="https://raw.githubusercontent.com/Ahmed19765/Ahmed19765/output/snake-dark.svg" alt="Snake animation" />
 </div>
