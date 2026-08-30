@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generate contribution ship GIF with Detailed Debugging Logs
+Generate contribution ship GIF matching EXACT GitHub Profile Calendar & Colors
 """
 
 import os
@@ -58,12 +58,13 @@ TITLE_TEXT = "My GitHub Contributions"
 TITLE_Y = 20
 TITLE_SIZE = 36
 
+# درجات الأخضر القياسية في GitHub
 GREEN_LEVELS = [
-    (235, 237, 240),
-    (198, 228, 139),
-    (123, 201, 111),
-    (35, 154, 59),
-    (19, 108, 50)
+    (235, 237, 240), # level 0 (رمادي فاتح/فارغ)
+    (155, 233, 168), # level 1 (أخضر فاتح جداً)
+    (64, 196, 99),   # level 2 (أخضر متوسط)
+    (48, 161, 78),   # level 3 (أخضر غامق)
+    (33, 110, 57)    # level 4 (أخضر شديد الكثافة)
 ]
 
 SEA_COLORS = [
@@ -129,18 +130,16 @@ def create_scattered_clouds():
     return clouds
 
 def fetch_github_contributions_recent(username, token):
-    """جلب مساهمات آخر 365 يوم مع إصلاح استعلام GraphQL"""
+    """جلب مساهمات سنة 2026 وترتيبها عمودياً بنفس شبكة GitHub بالضبط"""
     url = 'https://api.github.com/graphql'
     
+    current_year = datetime.now().year
     to_date = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
-    from_date = (datetime.now() - timedelta(days=365)).strftime('%Y-%m-%dT%H:%M:%S')
+    from_date = f"{current_year}-01-01T00:00:00"
     
     print(f"🔍 DEBUG: Target Username: '{username}'")
-    print(f"🔍 DEBUG: Has Token? -> {bool(token)}")
-    if token:
-        print(f"🔍 DEBUG: Token Length -> {len(token)} chars")
+    print(f"🔍 DEBUG: Fetching contributions from {from_date} to {to_date}")
 
-    # 🔧 تم تصحيح مكان totalContributions ليكون داخل contributionCalendar
     query = """
     query($username: String!, $from: DateTime!, $to: DateTime!) {
       user(login: $username) {
@@ -170,8 +169,6 @@ def fetch_github_contributions_recent(username, token):
         response = requests.post(url, json={'query': query, 'variables': variables}, 
                                 headers=headers, timeout=15)
         
-        print(f"📡 DEBUG: GitHub API Status Code: {response.status_code}")
-        
         if response.status_code == 200:
             data = response.json()
             if 'errors' in data:
@@ -180,7 +177,7 @@ def fetch_github_contributions_recent(username, token):
             
             user_data = data.get('data', {}).get('user')
             if not user_data:
-                print(f"❌ DEBUG: User '{username}' not found or returned null in API response.")
+                print(f"❌ DEBUG: User '{username}' not found.")
                 return None, 0
 
             calendar = user_data['contributionsCollection']['contributionCalendar']
@@ -188,25 +185,22 @@ def fetch_github_contributions_recent(username, token):
             weeks = calendar['weeks']
             print(f"✅ SUCCESS: Fetched {total} REAL contributions for '{username}'")
             
-            grid = []
-            for week in weeks:
+            # 🔧 تجهيز الشبكة بنفس التنسيق العمودي (7 أيام × عدد الأسابيع)
+            num_weeks = len(weeks)
+            grid = [[0 for _ in range(num_weeks)] for _ in range(7)]
+            
+            for col_idx, week in enumerate(weeks):
                 for day in week['contributionDays']:
+                    date_obj = datetime.strptime(day['date'], '%Y-%m-%d')
+                    row_idx = (date_obj.weekday() + 1) % 7  # الأحد صف 0 إلى السبت صف 6
+                    
                     count = day['contributionCount']
-                    level = 0 if count == 0 else 1 if count <= 3 else 2 if count <= 6 else 3 if count <= 9 else 4
-                    grid.append(level)
+                    level = 0 if count == 0 else 1 if count <= 2 else 2 if count <= 5 else 3 if count <= 8 else 4
+                    
+                    if row_idx < 7 and col_idx < num_weeks:
+                        grid[row_idx][col_idx] = level
             
-            rows = 7
-            cols = len(grid) // rows
-            formatted = []
-            for row in range(rows):
-                row_data = []
-                for col in range(cols):
-                    idx = col * rows + row
-                    if idx < len(grid):
-                        row_data.append(grid[idx])
-                formatted.append(row_data)
-            
-            return formatted, total
+            return grid, total
         else:
             print(f"❌ DEBUG Response Text: {response.text}")
     except Exception as e:
