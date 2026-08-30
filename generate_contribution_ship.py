@@ -182,8 +182,8 @@ def fetch_github_contributions_recent(username, token):
     """
     
     headers = {'User-Agent': 'Python-Script'}
-    if token:
-        headers['Authorization'] = f'Bearer {token}'
+    if token and token.strip():
+        headers['Authorization'] = f'bearer {token.strip()}'
     
     variables = {'username': username, 'from': from_date, 'to': to_date}
     
@@ -194,6 +194,7 @@ def fetch_github_contributions_recent(username, token):
         if response.status_code == 200:
             data = response.json()
             if 'errors' in data:
+                print(f"⚠️ GraphQL Errors: {data['errors']}")
                 return None, 0
             
             user_data = data.get('data', {}).get('user')
@@ -219,8 +220,10 @@ def fetch_github_contributions_recent(username, token):
                         grid[row_idx][col_idx] = level
             
             return grid, total
-    except Exception:
-        pass
+        else:
+            print(f"⚠️ HTTP Error: {response.status_code} - {response.text}")
+    except Exception as e:
+        print(f"⚠️ Exception: {e}")
     
     return None, 0
 
