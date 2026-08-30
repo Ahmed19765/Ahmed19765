@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generate contribution ship GIF matching EXACT GitHub Profile Calendar & Colors
+Generate contribution ship GIF with Wavy Pixel Text
 """
 
 import os
@@ -8,7 +8,7 @@ import sys
 import json
 import requests
 from datetime import datetime, timedelta
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import Image, ImageDraw, ImageFont
 import random
 import math
 
@@ -37,7 +37,7 @@ SEA_TRANSPARENCY = 180
 SEA_WAVE_AMPLITUDE = 5
 SEA_WAVE_FREQUENCY = 0.05
 
-TILE_SIZE = 9.7
+TILE_SIZE = 9.4
 TILE_SPACING = 3
 GRID_OFFSET_Y = 309
 GRID_OFFSET_X = -36.5
@@ -55,16 +55,15 @@ CLOUD_WHITE = (255, 255, 255, 240)
 CLOUD_SHADOW = (200, 210, 225, 200)
 
 TITLE_TEXT = "My GitHub Contributions"
-TITLE_Y = 20
-TITLE_SIZE = 36
+TITLE_Y = 25
+TITLE_SIZE = 28  # تعديل الحجم إلى 28
 
-# درجات الأخضر القياسية في GitHub
 GREEN_LEVELS = [
-    (235, 237, 240), # level 0 (رمادي فاتح/فارغ)
-    (155, 233, 168), # level 1 (أخضر فاتح جداً)
-    (64, 196, 99),   # level 2 (أخضر متوسط)
-    (48, 161, 78),   # level 3 (أخضر غامق)
-    (33, 110, 57)    # level 4 (أخضر شديد الكثافة)
+    (235, 237, 240),
+    (198, 228, 139),
+    (123, 201, 111),
+    (35, 154, 59),
+    (19, 108, 50)
 ]
 
 SEA_COLORS = [
@@ -74,6 +73,34 @@ SEA_COLORS = [
 ]
 
 # ═══════════════════════════════════════════════════════════════
+
+def get_pixel_font(size):
+    font_paths = [
+        "PressStart2P-Regular.ttf",
+        "C:\\Windows\\Fonts\\consola.ttf",
+        "C:\\Windows\\Fonts\\lucon.ttf",
+        "C:\\Windows\\Fonts\\courbd.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf"
+    ]
+    
+    if not os.path.exists("PressStart2P-Regular.ttf"):
+        try:
+            url = "https://github.com/google/fonts/raw/main/ofl/pressstart2p/PressStart2P-Regular.ttf"
+            r = requests.get(url, timeout=5)
+            if r.status_code == 200:
+                with open("PressStart2P-Regular.ttf", "wb") as f:
+                    f.write(r.content)
+        except Exception:
+            pass
+
+    for path in font_paths:
+        if os.path.exists(path):
+            try:
+                return ImageFont.truetype(path, size)
+            except Exception:
+                continue
+                
+    return ImageFont.load_default()
 
 class Cloud:
     def __init__(self, x, y, speed):
@@ -130,16 +157,11 @@ def create_scattered_clouds():
     return clouds
 
 def fetch_github_contributions_recent(username, token):
-    """جلب مساهمات سنة 2026 وترتيبها عمودياً بنفس شبكة GitHub بالضبط"""
     url = 'https://api.github.com/graphql'
     
-    current_year = datetime.now().year
     to_date = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
-    from_date = f"{current_year}-01-01T00:00:00"
+    from_date = (datetime.now() - timedelta(days=365)).strftime('%Y-%m-%dT%H:%M:%S')
     
-    print(f"🔍 DEBUG: Target Username: '{username}'")
-    print(f"🔍 DEBUG: Fetching contributions from {from_date} to {to_date}")
-
     query = """
     query($username: String!, $from: DateTime!, $to: DateTime!) {
       user(login: $username) {
@@ -172,39 +194,33 @@ def fetch_github_contributions_recent(username, token):
         if response.status_code == 200:
             data = response.json()
             if 'errors' in data:
-                print(f"❌ DEBUG API Error Payload: {json.dumps(data['errors'])}")
                 return None, 0
             
             user_data = data.get('data', {}).get('user')
             if not user_data:
-                print(f"❌ DEBUG: User '{username}' not found.")
                 return None, 0
 
             calendar = user_data['contributionsCollection']['contributionCalendar']
             total = calendar['totalContributions']
             weeks = calendar['weeks']
-            print(f"✅ SUCCESS: Fetched {total} REAL contributions for '{username}'")
             
-            # 🔧 تجهيز الشبكة بنفس التنسيق العمودي (7 أيام × عدد الأسابيع)
             num_weeks = len(weeks)
             grid = [[0 for _ in range(num_weeks)] for _ in range(7)]
             
             for col_idx, week in enumerate(weeks):
                 for day in week['contributionDays']:
                     date_obj = datetime.strptime(day['date'], '%Y-%m-%d')
-                    row_idx = (date_obj.weekday() + 1) % 7  # الأحد صف 0 إلى السبت صف 6
+                    row_idx = (date_obj.weekday() + 1) % 7
                     
                     count = day['contributionCount']
-                    level = 0 if count == 0 else 1 if count <= 2 else 2 if count <= 5 else 3 if count <= 8 else 4
+                    level = 0 if count == 0 else 1 if count <= 3 else 2 if count <= 6 else 3 if count <= 9 else 4
                     
                     if row_idx < 7 and col_idx < num_weeks:
                         grid[row_idx][col_idx] = level
             
             return grid, total
-        else:
-            print(f"❌ DEBUG Response Text: {response.text}")
-    except Exception as e:
-        print(f"❌ DEBUG Exception: {e}")
+    except Exception:
+        pass
     
     return None, 0
 
@@ -237,7 +253,23 @@ def draw_sea_layer(draw, frame_num):
         wave_y = horizon_y + int(math.sin(x * 0.05 + frame_num * 0.1) * 4)
         draw.ellipse([x, wave_y-2, x+15, wave_y+2], fill=(255, 255, 255, 100))
 
-def create_frame(draw, ship_img, ship_x, ship_y, clouds, grid, total, frame_num):
+def draw_wavy_text(draw, text, start_x, base_y, font, frame_num):
+    """رسم النص بحركة موجية خفيفة لكل حرف"""
+    current_x = start_x
+    for i, char in enumerate(text):
+        # حساب إزاحة الموجة لكل حرف
+        wave_y_offset = math.sin(frame_num * 0.15 + i * 0.3) * 3.5
+        char_y = base_y + wave_y_offset
+        
+        # رسم الحرف باللون الأسود مع الإطار الأبيض
+        draw.text((current_x, char_y), char, fill=(0, 0, 0, 255), font=font, stroke_width=2, stroke_fill=(255, 255, 255, 255))
+        
+        # تقديم الإحداثيات السينية للحرف التالي
+        char_bbox = font.getbbox(char)
+        char_width = char_bbox[2] - char_bbox[0] if char_bbox else font.getlength(char)
+        current_x += char_width
+
+def create_frame(draw, ship_img, ship_x, ship_y, clouds, grid, total, frame_num, font_large):
     for y in range(IMAGE_HEIGHT):
         ratio = y / IMAGE_HEIGHT
         r = int(30 * (1 - ratio) + 110 * ratio)
@@ -272,16 +304,13 @@ def create_frame(draw, ship_img, ship_x, ship_y, clouds, grid, total, frame_num)
     
     draw_sea_layer(draw, frame_num)
     
-    try:
-        font_large = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", TITLE_SIZE)
-    except:
-        font_large = ImageFont.load_default()
-    
     title = f"{TITLE_TEXT}: {total}"
-    title_bbox = draw.textbbox((0, 0), title, font=font_large)
+    title_bbox = font_large.getbbox(title)
     title_width = title_bbox[2] - title_bbox[0]
-    draw.text(((IMAGE_WIDTH - title_width) // 2, TITLE_Y), title, 
-              fill=(255, 255, 255, 255), font=font_large)
+    title_x = (IMAGE_WIDTH - title_width) // 2
+    
+    # تطبيق تأثير الموجة على النص
+    draw_wavy_text(draw, title, title_x, TITLE_Y, font_large, frame_num)
 
 def main():
     print("=" * 60)
@@ -312,6 +341,7 @@ def main():
     ship_y = int(IMAGE_HEIGHT * SHIP_Y_POSITION) + SHIP_Y_OFFSET - 40
     
     clouds = create_scattered_clouds()
+    font_large = get_pixel_font(TITLE_SIZE)
     
     print(f"📊 Final Rendered Total: {total}")
     print(f"🎬 Creating {FRAME_COUNT} frames...")
@@ -320,7 +350,7 @@ def main():
     for frame_num in range(FRAME_COUNT):
         img = Image.new('RGBA', (IMAGE_WIDTH, IMAGE_HEIGHT), (0, 0, 0, 0))
         draw = ImageDraw.Draw(img)
-        create_frame(draw, ship_img, ship_x, ship_y, clouds, grid, total, frame_num)
+        create_frame(draw, ship_img, ship_x, ship_y, clouds, grid, total, frame_num, font_large)
         frames.append(img.convert('RGB'))
         if (frame_num + 1) % 20 == 0:
             print(f"   ⏳ {frame_num + 1}/{FRAME_COUNT}")
