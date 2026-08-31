@@ -52,7 +52,10 @@
 ### 👑 About Me
 
 ```csharp
-public class SoftwareEngineer
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+public class SoftwareEngineer : IEngineer
 {
     public string Name => "Ahmed Ehab";
     public string Role => "Back-End .NET Developer & Full-Stack Engineer";
@@ -60,16 +63,50 @@ public class SoftwareEngineer
     public string Education => "B.Sc. in Computer Science (2023 - 2027)";
     public string[] CoreStack => new[] { "C#", "ASP.NET Core", "EF Core", "CQRS + MediatR", "Clean/Onion Architecture" };
     public string[] Passions => new[] { "Clean Architecture", "Offline-First AI Tooling", "Cross-Platform UX", "Roslyn & Dev Tooling" };
-
+ 
+    private readonly IProgrammer _programmer;
+    private readonly IEnumerable<ICoreValue> _coreValues;
+    private readonly IMindset _mindset;
+    private readonly IMood _mood;
+ 
+    public SoftwareEngineer(IProgrammer programmer,
+                             IEnumerable<ICoreValue> coreValues,
+                             IMindset mindset,
+                             IMood mood)
+    {
+        _programmer = programmer;
+        _coreValues = coreValues;
+        _mindset = mindset;
+        _mood = mood;
+    }
+ 
     public void WorkEthic()
     {
         while (true)
         {
-            WriteCleanCode();
-            ArchitectForScale();
-            DebugRelentlessly();   // step-by-step, one root cause at a time
-            ShipAcrossWebDesktopAndMobile();
+            _coreValues.WriteCleanCode();
+            _mindset.ArchitectForScale();
+            _programmer.DebugRelentlessly();   // step-by-step, one root cause at a time
+            _programmer.ShipAcrossWebDesktopAndMobile();
+            _mood.Recharge();
         }
+    }
+}
+ 
+public static class ServiceCollectionExtensions
+{
+    public static IServiceCollection AddCareerServices(this IServiceCollection services)
+    {
+        services.AddSingleton<ICoreValue, CleanCode>();
+        services.AddSingleton<ICoreValue, Integrity>();
+        services.AddScoped<IMindset, ProblemSolver>();
+        services.AddTransient<IMood, GameDevelopment>();
+        services.AddScoped<IProgrammer, Ahmed>();
+        services.AddHostedService<ContinuousLearning>();
+ 
+        services.AddScoped<IEngineer, SoftwareEngineer>();
+ 
+        return services;
     }
 }
 ```
