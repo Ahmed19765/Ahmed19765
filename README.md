@@ -331,6 +331,7 @@ Specialized Programs & Badges:
 
 ### 📊 GitHub Activity & Statistics Dashboard
 
+<!-- GitHub Activity & Statistics Dashboard -->
 <div align="center">
 
   <!-- GitHub Profile Trophies -->
@@ -341,23 +342,24 @@ Specialized Programs & Badges:
   <br><br>
 
   <!-- GitHub Stats & Top Languages Cards -->
-  <table border="0">
+  <table border="0" width="100%">
     <tr>
-      <td width="50%" align="center">
+      <td width="50%" align="center" valign="top">
         <a href="https://github.com/Ahmed19765">
-          <img src="https://github-readme-stats.vercel.app/api?username=Ahmed19765&show_icons=true&theme=radical&hide_border=true&bg_color=0D0B18&title_color=DAB3FF&text_color=E0D5FF&icon_color=F9D402&count_private=true" alt="Ahmed's GitHub Stats" />
+          <img width="100%" src="https://github-readme-stats.vercel.app/api?username=Ahmed19765&show_icons=true&theme=radical&hide_border=true&bg_color=0D0B18&title_color=DAB3FF&text_color=E0D5FF&icon_color=F9D402&count_private=true&cache_seconds=1800" alt="Ahmed's GitHub Stats" />
         </a>
       </td>
-      <td width="50%" align="center">
+      <td width="50%" align="center" valign="top">
         <a href="https://github.com/Ahmed19765">
-          <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Ahmed19765&layout=compact&theme=radical&hide_border=true&bg_color=0D0B18&title_color=DAB3FF&text_color=E0D5FF&icon_color=F9D402" alt="Ahmed's Top Languages" />
+          <img width="100%" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Ahmed19765&layout=compact&theme=radical&hide_border=true&bg_color=0D0B18&title_color=DAB3FF&text_color=E0D5FF&icon_color=F9D402&cache_seconds=1800" alt="Ahmed's Top Languages" />
         </a>
       </td>
     </tr>
     <tr>
       <td colspan="2" align="center">
+        <br>
         <a href="https://github.com/Ahmed19765">
-          <img src="https://github-readme-streak-stats.herokuapp.com/?user=Ahmed19765&theme=radical&hide_border=true&background=0D0B18&ring=9B2FFF&fire=F9D402&currStreakLabel=DAB3FF&sideLabels=E0D5FF" alt="Ahmed's Streak Stats" />
+          <img width="100%" src="https://github-readme-streak-stats.herokuapp.com/?user=Ahmed19765&theme=radical&hide_border=true&background=0D0B18&ring=9B2FFF&fire=F9D402&currStreakLabel=DAB3FF&sideLabels=E0D5FF" alt="Ahmed's Streak Stats" />
         </a>
       </td>
     </tr>
