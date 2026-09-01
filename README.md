@@ -336,10 +336,7 @@ Specialized Programs & Badges:
 
   <p align="center">
     <a href="https://github.com/Ahmed19765">
-      <img height="165" src="https://github-readme-stats-eight-vector.vercel.app/api?username=Ahmed19765&show_icons=true&theme=radical&hide_border=true&bg_color=0D0B18&title_color=DAB3FF&text_color=E0D5FF&icon_color=F9D402&count_private=true" alt="Ahmed's GitHub Stats" />
-    </a>
-    <a href="https://github.com/Ahmed19765">
-      <img height="165" src="https://github-readme-stats-eight-vector.vercel.app/api/top-langs/?username=Ahmed19765&layout=compact&theme=radical&hide_border=true&bg_color=0D0B18&title_color=DAB3FF&text_color=E0D5FF&icon_color=F9D402" alt="Ahmed's Top Languages" />
+      <img width="100%" src="https://github-readme-activity-graph.vercel.app/graph?username=Ahmed19765&theme=react-dark&bg_color=0D0B18&title_color=DAB3FF&line=9b2fff&point=F9D402&area=true&hide_border=true" alt="Ahmed's GitHub Activity Graph" />
     </a>
   </p>
 
