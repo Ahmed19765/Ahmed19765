@@ -332,21 +332,11 @@ Specialized Programs & Badges:
 ### 📊 GitHub Activity & Statistics Dashboard
 
 <!-- GitHub Activity & Statistics Dashboard -->
+
 <div align="center">
-
-  <p align="center">
-    <a href="https://github.com/Ahmed19765">
-      <img width="100%" src="https://github-readme-activity-graph.vercel.app/graph?username=Ahmed19765&theme=react-dark&bg_color=0D0B18&title_color=DAB3FF&line=9b2fff&point=F9D402&area=true&hide_border=true" alt="Ahmed's GitHub Activity Graph" />
-    </a>
-  </p>
-
-  <p align="center">
-    <a href="https://github.com/Ahmed19765">
-      <img src="https://github-readme-streak-stats.herokuapp.com/?user=Ahmed19765&theme=radical&hide_border=true&background=0D0B18&ring=9B2FFF&fire=F9D402&currStreakLabel=DAB3FF&sideLabels=E0D5FF" alt="Ahmed's Streak Stats" />
-    </a>
-  </p>
-
+  <img src="https://streak-stats.demolab.com?user=Ahmed19765&locale=en&mode=daily&theme=dracula&hide_border=false&border_radius=5" height="150" alt="streak graph" />
 </div>
+
 
 ---
 
